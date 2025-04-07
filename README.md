@@ -122,7 +122,7 @@ The application uses the [MealDB API](https://www.themealdb.com/) for fetching r
 
 ## 📜 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://opensource.org/licenses/MIT) file for details.
 
 ---
 

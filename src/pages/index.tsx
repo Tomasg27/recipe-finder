@@ -1,21 +1,22 @@
-import React, { useState, useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
-import Layout from "@/components/Layout";
-import SearchBar, { SearchBarRef } from "@/components/SearchBar";
-import RecipeGrid from "@/components/RecipeGrid";
-import RecipeDetails from "@/components/RecipeDetails";
+import ErrorRecipes from "@/components/ErrorRecipes";
 import HomeHero from "@/components/HomeHero";
-import {
-  searchRecipesByQuery,
-  getRecipeDetails,
-} from "@/services/recipeService";
+import Layout from "@/components/Layout";
+import RecipeDetails from "@/components/RecipeDetails";
+import RecipeGrid from "@/components/RecipeGrid";
+import RecipesTabs from "@/components/RecipesTabs";
+import SearchBar, { SearchBarRef } from "@/components/SearchBar";
 import { useFavorites } from "@/hooks/useFavorites";
 import { toast } from "@/lib/toast";
+import {
+  getRecipeDetails,
+  searchRecipesByQuery,
+} from "@/services/recipeService";
 import { Recipe, RecipeDetails as RecipeDetailsType } from "@/types/recipe";
+import { useQuery } from "@tanstack/react-query";
+import { useRef, useState } from "react";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [hasSearched, setHasSearched] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [recipeDetails, setRecipeDetails] = useState<RecipeDetailsType | null>(
     null
@@ -25,7 +26,6 @@ const Index = () => {
   const { favorites, addFavorite, removeFavorite, isFavorite } = useFavorites();
   const searchBarRef = useRef<SearchBarRef>(null);
 
-  // Query for recipe search results
   const {
     data: recipes = [],
     isLoading,
@@ -42,7 +42,6 @@ const Index = () => {
     setActiveTab("search");
   };
 
-  // Handle recipe selection and fetch details
   const handleRecipeClick = async (recipe: Recipe) => {
     setSelectedRecipe(recipe);
     setIsDetailsModalOpen(true);
@@ -58,14 +57,12 @@ const Index = () => {
     }
   };
 
-  // Handle closing the recipe details modal
   const handleCloseDetails = () => {
     setIsDetailsModalOpen(false);
     setSelectedRecipe(null);
     setRecipeDetails(null);
   };
 
-  // Handle favorite action from the details modal
   const handleToggleFavorite = () => {
     if (!selectedRecipe) return;
 
@@ -76,7 +73,6 @@ const Index = () => {
     }
   };
 
-  // Handle favorite action from recipe card
   const handleCardFavorite = (recipe: Recipe) => {
     if (isFavorite(recipe.id)) {
       removeFavorite(recipe.id);
@@ -85,12 +81,10 @@ const Index = () => {
     }
   };
 
-  // Scroll to search when "Get Started" is clicked on the hero and focus the search input
   const handleGetStarted = () => {
     const searchElement = document.getElementById("search-section");
     if (searchElement) {
       searchElement.scrollIntoView({ behavior: "smooth" });
-      // Use setTimeout to ensure the focus happens after the scrolling
       setTimeout(() => {
         searchBarRef.current?.focus();
       }, 500);
@@ -114,43 +108,14 @@ const Index = () => {
           </div>
         )}
 
-        {activeTab === "search" && searchQuery && (
-          <div className="mb-6">
-            <h2 className="text-2xl font-semibold mb-1">Search Results</h2>
-            <p className="text-muted-foreground">
-              Showing results for "{searchQuery}"
-            </p>
-          </div>
-        )}
-
-        {activeTab === "favorites" && (
-          <div className="mb-6">
-            <h2 className="text-2xl font-semibold mb-1">Your Favorites</h2>
-            <p className="text-muted-foreground">
-              {favorites.length > 0
-                ? `You have ${favorites.length} saved recipe${
-                    favorites.length > 1 ? "s" : ""
-                  }`
-                : "You have no saved recipes yet. Search and save recipes to see them here!"}
-            </p>
-          </div>
-        )}
+        <RecipesTabs
+          activeTab={activeTab}
+          searchQuery={searchQuery}
+          favoritesCount={favorites.length}
+        />
 
         {activeTab === "search" && isError && (
-          <div className="text-center py-12">
-            <h3 className="text-xl font-semibold mb-2 text-red-500">
-              Oops! Something went wrong
-            </h3>
-            <p className="text-muted-foreground mb-4">
-              We couldn't fetch the recipes. Please try again later.
-            </p>
-            <button
-              onClick={() => refetch()}
-              className="text-recipe-primary hover:underline"
-            >
-              Try again
-            </button>
-          </div>
+          <ErrorRecipes onRetry={refetch} />
         )}
 
         <RecipeGrid
@@ -159,7 +124,7 @@ const Index = () => {
           onFavorite={handleCardFavorite}
           isFavorite={isFavorite}
           loading={isLoading}
-          hasSearched={hasSearched}
+          hasSearched={!!searchQuery}
         />
       </div>
 

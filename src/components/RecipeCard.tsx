@@ -1,9 +1,9 @@
 import React from "react";
-import { Recipe } from "@/services/recipeService";
 import { Card, CardContent } from "@/components/ui/card";
 import { Bookmark, Clock, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Recipe } from "@/types/recipe";
 
 interface RecipeCardProps {
   recipe: Recipe;

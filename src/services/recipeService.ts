@@ -1,48 +1,5 @@
 import { toast } from "@/lib/toast";
-
-export interface Recipe {
-  id: number;
-  title: string;
-  image: string;
-  imageType?: string;
-  usedIngredientCount?: number;
-  missedIngredientCount?: number;
-  missedIngredients?: Ingredient[];
-  usedIngredients?: Ingredient[];
-  unusedIngredients?: Ingredient[];
-  likes?: number;
-  summary?: string;
-  instructions?: string;
-  readyInMinutes?: number;
-  servings?: number;
-  category?: string;
-  area?: string;
-  tags?: string;
-  source?: string;
-}
-
-export interface Ingredient {
-  id: number;
-  amount?: number;
-  unit?: string;
-  unitLong?: string;
-  unitShort?: string;
-  aisle?: string;
-  name: string;
-  original?: string;
-  originalName?: string;
-  meta?: string[];
-  image?: string;
-  measure?: string;
-}
-
-export interface RecipeDetails extends Recipe {
-  summary: string;
-  instructions: string;
-  readyInMinutes?: number;
-  servings?: number;
-  ingredients: Ingredient[];
-}
+import { Ingredient, Recipe, RecipeDetails } from "@/types/recipe";
 
 const BASE_URL = "https://www.themealdb.com/api/json/v1/1";
 
@@ -60,11 +17,10 @@ const convertMealToRecipe = (meal: any): Recipe => {
   };
 };
 
-// Helper to extract ingredients from MealDB response
+// Helper to extract ingredients from a meal
 const extractIngredients = (meal: any): Ingredient[] => {
   const ingredients: Ingredient[] = [];
 
-  // MealDB stores ingredients as strIngredient1, strIngredient2, etc. up to 20
   for (let i = 1; i <= 20; i++) {
     const ingredientName = meal[`strIngredient${i}`];
     const measure = meal[`strMeasure${i}`];
@@ -87,7 +43,7 @@ export const searchRecipesByIngredients = async (
 ): Promise<Recipe[]> => {
   try {
     // MealDB doesn't have a specific endpoint for searching by multiple ingredients
-    // So we'll use the filter by main ingredient endpoint with the first ingredient
+    // So I will just take the first ingredient and search for recipes that include it
     const mainIngredient = ingredients.split(",")[0].trim();
     const response = await fetch(`${BASE_URL}/filter.php?i=${mainIngredient}`);
 
@@ -152,7 +108,6 @@ export const getRecipeDetails = async (
     const meal = data.meals[0];
     const ingredients = extractIngredients(meal);
 
-    // Ensure instructions is a non-empty string to satisfy the RecipeDetails interface
     const instructions = meal.strInstructions || "No instructions available.";
     const summary = meal.strInstructions
       ? meal.strInstructions.slice(0, 150) + "..."
@@ -163,8 +118,8 @@ export const getRecipeDetails = async (
       summary: summary,
       instructions: instructions,
       ingredients: ingredients,
-      readyInMinutes: 30, // MealDB doesn't provide this info, using default
-      servings: 4, // MealDB doesn't provide this info, using default
+      readyInMinutes: 30,
+      servings: 4,
     };
   } catch (error) {
     console.error("Error fetching recipe details:", error);

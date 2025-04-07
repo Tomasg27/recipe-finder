@@ -6,13 +6,12 @@ import RecipeGrid from "@/components/RecipeGrid";
 import RecipeDetails from "@/components/RecipeDetails";
 import HomeHero from "@/components/HomeHero";
 import {
-  Recipe,
-  RecipeDetails as RecipeDetailsType,
   searchRecipesByQuery,
   getRecipeDetails,
 } from "@/services/recipeService";
 import { useFavorites } from "@/hooks/useFavorites";
 import { toast } from "@/lib/toast";
+import { Recipe, RecipeDetails as RecipeDetailsType } from "@/types/recipe";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");

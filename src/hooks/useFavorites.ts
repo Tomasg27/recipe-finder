@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Recipe } from "@/services/recipeService";
 import { toast } from "@/lib/toast";
+import { Recipe } from "@/types/recipe";
 
 export function useFavorites() {
   const [favorites, setFavorites] = useState<Recipe[]>(() => {

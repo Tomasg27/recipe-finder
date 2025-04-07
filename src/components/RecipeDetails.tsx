@@ -1,5 +1,4 @@
 import React from "react";
-import { RecipeDetails as RecipeDetailsType } from "@/services/recipeService";
 import {
   Dialog,
   DialogContent,
@@ -13,6 +12,7 @@ import { Bookmark, Clock, Users, Globe, Tag } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RecipeDetails as RecipeDetailsType } from "@/types/recipe";
 
 interface RecipeDetailsProps {
   recipe: RecipeDetailsType | null;

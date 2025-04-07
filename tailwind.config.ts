@@ -119,4 +119,5 @@ export default {
     },
   },
   plugins: [require("tailwindcss-animate")],
+  mode: "jit",
 } satisfies Config;

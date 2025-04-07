@@ -82,6 +82,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
           <img
             src={recipe.image}
             alt={recipe.title}
+            loading="lazy"
             className="w-full h-64 object-cover"
           />
         </div>

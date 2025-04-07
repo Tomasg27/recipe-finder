@@ -27,6 +27,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
         <img
           src={recipe.image}
           alt={recipe.title}
+          loading="lazy"
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
         />
         <Button

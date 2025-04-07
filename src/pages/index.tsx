@@ -1,7 +1,5 @@
 import ErrorRecipes from "@/components/ErrorRecipes";
-import HomeHero from "@/components/HomeHero";
 import Layout from "@/components/Layout";
-import RecipeDetails from "@/components/RecipeDetails";
 import RecipeGrid from "@/components/RecipeGrid";
 import RecipesTabs from "@/components/RecipesTabs";
 import SearchBar, { SearchBarRef } from "@/components/SearchBar";
@@ -13,7 +11,10 @@ import {
 } from "@/services/recipeService";
 import { Recipe, RecipeDetails as RecipeDetailsType } from "@/types/recipe";
 import { useQuery } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useRef, useState, lazy, Suspense } from "react";
+
+const RecipeDetails = lazy(() => import("@/components/RecipeDetails"));
+const HomeHero = lazy(() => import("@/components/HomeHero"));
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -98,7 +99,9 @@ const Index = () => {
       favoritesCount={favorites.length}
     >
       {activeTab === "search" && !searchQuery && (
-        <HomeHero onGetStarted={handleGetStarted} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <HomeHero onGetStarted={handleGetStarted} />
+        </Suspense>
       )}
 
       <div id="search-section" className="mt-8">
@@ -127,14 +130,15 @@ const Index = () => {
           hasSearched={!!searchQuery}
         />
       </div>
-
-      <RecipeDetails
-        recipe={recipeDetails}
-        isOpen={isDetailsModalOpen}
-        onClose={handleCloseDetails}
-        onFavorite={handleToggleFavorite}
-        isFavorite={selectedRecipe ? isFavorite(selectedRecipe.id) : false}
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <RecipeDetails
+          recipe={recipeDetails}
+          isOpen={isDetailsModalOpen}
+          onClose={handleCloseDetails}
+          onFavorite={handleToggleFavorite}
+          isFavorite={selectedRecipe ? isFavorite(selectedRecipe.id) : false}
+        />
+      </Suspense>
     </Layout>
   );
 };

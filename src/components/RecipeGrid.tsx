@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import RecipeCard from "./RecipeCard";
 import { Recipe } from "@/types/recipe";
+import React from "react";
+import RecipeCard from "./RecipeCard";
 
 interface RecipeGridProps {
   recipes: Recipe[];

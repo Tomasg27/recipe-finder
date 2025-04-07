@@ -35,9 +35,21 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="pb-2">
-          <DialogTitle className="text-2xl font-bold">
-            {recipe.title}
-          </DialogTitle>
+          <div className="flex items-center gap-4">
+            <DialogTitle className="text-2xl font-bold">
+              {recipe.title}
+            </DialogTitle>
+            <Button
+              variant="outline"
+              size="icon"
+              className={cn(isFavorite && "text-recipe-primary")}
+              onClick={onFavorite}
+            >
+              <Bookmark
+                className={cn("h-5 w-5", isFavorite && "fill-recipe-primary")}
+              />
+            </Button>
+          </div>
           <div className="flex flex-wrap gap-4 mt-2">
             {recipe.category && (
               <div className="flex items-center">
@@ -63,18 +75,6 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
                 <span>{recipe.servings} servings</span>
               </div>
             )}
-          </div>
-          <div className="absolute right-4 top-4">
-            <Button
-              variant="outline"
-              size="icon"
-              className={cn(isFavorite && "text-recipe-primary")}
-              onClick={onFavorite}
-            >
-              <Bookmark
-                className={cn("h-5 w-5", isFavorite && "fill-recipe-primary")}
-              />
-            </Button>
           </div>
         </DialogHeader>
 

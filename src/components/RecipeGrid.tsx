@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import RecipeCard from "./RecipeCard";
 import { Recipe } from "@/types/recipe";
 
@@ -8,6 +8,7 @@ interface RecipeGridProps {
   onFavorite: (recipe: Recipe) => void;
   isFavorite: (id: number) => boolean;
   loading?: boolean;
+  hasSearched?: boolean; // New prop to track if a search has been performed
 }
 
 const RecipeGrid: React.FC<RecipeGridProps> = ({
@@ -16,6 +17,7 @@ const RecipeGrid: React.FC<RecipeGridProps> = ({
   onFavorite,
   isFavorite,
   loading = false,
+  hasSearched = false, // Default to false
 }) => {
   if (loading) {
     return (
@@ -30,7 +32,7 @@ const RecipeGrid: React.FC<RecipeGridProps> = ({
     );
   }
 
-  if (recipes.length === 0) {
+  if (hasSearched && recipes.length === 0) {
     return (
       <div className="text-center py-12">
         <h3 className="text-xl font-semibold mb-2">No recipes found</h3>

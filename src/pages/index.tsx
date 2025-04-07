@@ -15,6 +15,7 @@ import { Recipe, RecipeDetails as RecipeDetailsType } from "@/types/recipe";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [hasSearched, setHasSearched] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [recipeDetails, setRecipeDetails] = useState<RecipeDetailsType | null>(
     null
@@ -36,7 +37,6 @@ const Index = () => {
     enabled: searchQuery.length > 0,
   });
 
-  // Handle search
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     setActiveTab("search");
@@ -159,6 +159,7 @@ const Index = () => {
           onFavorite={handleCardFavorite}
           isFavorite={isFavorite}
           loading={isLoading}
+          hasSearched={hasSearched}
         />
       </div>
 

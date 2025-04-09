@@ -15,11 +15,11 @@ const HomeHero: React.FC<HomeHeroProps> = ({ onGetStarted }) => {
       />
       <div className="relative py-12 px-6 md:py-20 md:px-10 rounded-lg overflow-hidden">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-3xl md:text-5xl font-bold mb-6 animate-slide-up">
+          <h1 className="text-3xl md:text-5xl font-bold mb-6">
             Discover Delicious Recipes with Recipe Finder
           </h1>
           <p
-            className="text-lg md:text-xl text-muted-foreground mb-8 animate-slide-up"
+            className="text-lg md:text-xl text-muted-foreground mb-8"
             style={{ animationDelay: "100ms" }}
           >
             Enter ingredients you have or dishes you're craving to find the
@@ -27,8 +27,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({ onGetStarted }) => {
           </p>
           <Button
             onClick={onGetStarted}
-            className="bg-recipe-primary hover:bg-recipe-primary/90 px-8 py-6 text-lg h-auto animate-slide-up"
-            style={{ animationDelay: "200ms" }}
+            className="bg-recipe-primary hover:bg-recipe-primary/90 px-8 py-6 text-lg h-auto"
           >
             Find Recipes <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
